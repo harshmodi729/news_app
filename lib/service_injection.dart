@@ -13,7 +13,7 @@ Future<void> initServiceInjection() async {
   si.registerSingleton<Dio>(Dio());
 
   // services
-  si.registerSingleton<NewsApiService>(si());
+  si.registerSingleton<NewsApiService>(NewsApiService(si()));
 
   // repository
   si.registerSingleton<ArticleRepository>(ArticleRepositoryImpl(si()));

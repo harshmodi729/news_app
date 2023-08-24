@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/features/daily_news/presentation/blocs/aricle/article_bloc.dart';
 
+import '../../widgets/article_tile.dart';
+
 class DailyNews extends StatelessWidget {
   const DailyNews({super.key});
 
@@ -44,11 +46,12 @@ class DailyNews extends StatelessWidget {
         if (state is ArticleDone) {
           return ListView.builder(
             itemBuilder: (context, index) {
-              return Text(state.articleEntity!.articles[index].title);
-              // return ArticleWidget(
-              //   article: state.articles![index] ,
-              //   onArticlePressed: (article) => _onArticlePressed(context,article),
-              // );
+              return ArticleWidget(
+                 article: state.articleEntity!.articles[index] ,
+                 onArticlePressed: (article) {
+                   // _onArticlePressed(context, article);
+                 },
+              );
             },
             itemCount: state.articleEntity!.articles.length,
           );

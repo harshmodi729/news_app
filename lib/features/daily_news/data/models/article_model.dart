@@ -1,5 +1,7 @@
+import 'package:floor/floor.dart';
 import 'package:news_app/features/daily_news/domain/entities/article_entity.dart';
 
+@Entity(tableName: 'article_list')
 class ArticleListModel extends ArticleEntity {
   ArticleListModel({required super.articles});
 
@@ -12,14 +14,14 @@ class ArticleListModel extends ArticleEntity {
 
 class ArticleModel extends Article {
   ArticleModel(
-      {required super.source,
-      required super.author,
-      required super.title,
-      required super.description,
-      required super.url,
-      required super.urlToImage,
-      required super.publishedAt,
-      required super.content});
+      {super.source,
+      super.author,
+      super.title,
+      super.description,
+      super.url,
+      super.urlToImage,
+      super.publishedAt,
+      super.content});
 
   static ArticleModel fromJson(Map<String, dynamic> json) => ArticleModel(
         source: SourceModel.fromJson(json["source"]),
@@ -28,7 +30,7 @@ class ArticleModel extends Article {
         description: json["description"],
         url: json["url"],
         urlToImage: json["urlToImage"],
-        publishedAt: DateTime.parse(json["publishedAt"]),
+        publishedAt: json["publishedAt"],
         content: json["content"],
       );
 }
