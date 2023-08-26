@@ -6,9 +6,15 @@ import 'package:news_app/features/daily_news/domain/repositories/article_reposit
 import 'package:news_app/features/daily_news/domain/usecases/get_article_usecase.dart';
 import 'package:news_app/features/daily_news/presentation/blocs/aricle/article_bloc.dart';
 
+import 'features/daily_news/data/data_sources/local/dao/app_db.dart';
+
 final si = GetIt.instance;
 
 Future<void> initServiceInjection() async {
+  // create db
+  final database = await $FloorAppDb.databaseBuilder('app_db.db').build();
+  si.registerSingleton<AppDb>(database);
+
   // dio
   si.registerSingleton<Dio>(Dio());
 

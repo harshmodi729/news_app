@@ -5,8 +5,9 @@ import 'package:news_app/features/daily_news/presentation/pages/home/daily_news.
 import 'package:news_app/service_injection.dart';
 // GET https://newsapi.org/v2/top-headlines?country=us&apiKey=c54fab7086b64761bf4be9df7fc0f998
 
-void main() {
-  initServiceInjection();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initServiceInjection();
   runApp(const MyApp());
 }
 
