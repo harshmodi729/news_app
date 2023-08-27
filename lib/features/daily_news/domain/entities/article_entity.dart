@@ -7,7 +7,7 @@ class ArticleEntity {
 }
 
 class Article {
-  // Source? source;
+  Source? source;
   String? author;
   String? title;
   String? description;
@@ -17,7 +17,7 @@ class Article {
   String? content;
 
   Article({
-    // this.source,
+    this.source,
     this.author,
     this.title,
     this.description,
@@ -29,11 +29,11 @@ class Article {
 }
 
 class Source {
-  String id;
-  String name;
+  String? id;
+  String? name;
 
   Source({
-    required this.id,
-    required this.name,
+    this.id,
+    this.name,
   });
 }

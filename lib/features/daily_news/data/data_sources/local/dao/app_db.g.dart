@@ -115,6 +115,7 @@ class _$ArticleDao extends ArticleDao {
             database,
             'articles',
             (ArticleModel item) => <String, Object?>{
+                  'source': item.source,
                   'author': item.author,
                   'title': item.title,
                   'description': item.description,
@@ -128,6 +129,7 @@ class _$ArticleDao extends ArticleDao {
             'articles',
             ['author'],
             (ArticleModel item) => <String, Object?>{
+                  'source': item.source,
                   'author': item.author,
                   'title': item.title,
                   'description': item.description,
@@ -141,6 +143,7 @@ class _$ArticleDao extends ArticleDao {
             'articles',
             ['author'],
             (ArticleModel item) => <String, Object?>{
+                  'source': item.source,
                   'author': item.author,
                   'title': item.title,
                   'description': item.description,
@@ -166,6 +169,7 @@ class _$ArticleDao extends ArticleDao {
   Future<List<ArticleModel>> getAllArticles() async {
     return _queryAdapter.queryList('SELECT * from articles',
         mapper: (Map<String, Object?> row) => ArticleModel(
+            source: row['source'] as SourceModel?,
             author: row['author'] as String?,
             title: row['title'] as String?,
             description: row['description'] as String?,
@@ -201,13 +205,13 @@ class _$SourceDao extends SourceDao {
         _sourceModelInsertionAdapter = InsertionAdapter(
             database,
             'sources',
-            (SourceModel item) =>
+            (Source item) =>
                 <String, Object?>{'id': item.id, 'name': item.name}),
         _sourceModelDeletionAdapter = DeletionAdapter(
             database,
             'sources',
             ['id'],
-            (SourceModel item) =>
+            (Source item) =>
                 <String, Object?>{'id': item.id, 'name': item.name});
 
   final sqflite.DatabaseExecutor database;
@@ -216,25 +220,24 @@ class _$SourceDao extends SourceDao {
 
   final QueryAdapter _queryAdapter;
 
-  final InsertionAdapter<SourceModel> _sourceModelInsertionAdapter;
+  final InsertionAdapter<Source> _sourceModelInsertionAdapter;
 
-  final DeletionAdapter<SourceModel> _sourceModelDeletionAdapter;
+  final DeletionAdapter<Source> _sourceModelDeletionAdapter;
 
   @override
-  Future<List<SourceModel>> getAllSources() async {
+  Future<List<Source>> getAllSources() async {
     return _queryAdapter.queryList('SELECT * from sources',
         mapper: (Map<String, Object?> row) =>
             SourceModel(id: row['id'] as String, name: row['name'] as String));
   }
 
   @override
-  Future<void> insertSource(SourceModel sourceModel) async {
-    await _sourceModelInsertionAdapter.insert(
-        sourceModel, OnConflictStrategy.abort);
+  Future<void> insertSource(Source source) async {
+    await _sourceModelInsertionAdapter.insert(source, OnConflictStrategy.abort);
   }
 
   @override
-  Future<void> deleteSource(SourceModel sourceModel) async {
-    await _sourceModelDeletionAdapter.delete(sourceModel);
+  Future<void> deleteSource(Source source) async {
+    await _sourceModelDeletionAdapter.delete(source);
   }
 }

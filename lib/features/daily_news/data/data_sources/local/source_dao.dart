@@ -1,14 +1,15 @@
 import 'package:floor/floor.dart';
-import 'package:news_app/features/daily_news/data/models/article_model.dart';
+
+import '../../../domain/entities/article_entity.dart';
 
 @dao
 abstract class SourceDao {
   @insert
-  Future<void> insertSource(SourceModel sourceModel);
+  Future<void> insertSource(Source source);
 
   @delete
-  Future<void> deleteSource(SourceModel sourceModel);
+  Future<void> deleteSource(Source source);
 
   @Query('SELECT * from sources')
-  Future<List<SourceModel>> getAllSources();
+  Future<List<Source>> getAllSources();
 }

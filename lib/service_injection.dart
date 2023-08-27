@@ -22,7 +22,7 @@ Future<void> initServiceInjection() async {
   si.registerSingleton<NewsApiService>(NewsApiService(si()));
 
   // repository
-  si.registerSingleton<ArticleRepository>(ArticleRepositoryImpl(si()));
+  si.registerSingleton<ArticleRepository>(ArticleRepositoryImpl(si(), si()));
 
   // usecase
   si.registerSingleton<GetArticleUseCase>(GetArticleUseCase(si()));
