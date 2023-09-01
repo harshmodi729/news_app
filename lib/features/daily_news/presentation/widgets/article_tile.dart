@@ -39,50 +39,53 @@ class ArticleWidget extends StatelessWidget {
   }
 
   Widget _buildImage(BuildContext context) {
-    return CachedNetworkImage(
-        imageUrl: article!.urlToImage ?? '',
-        imageBuilder: (context, imageProvider) => Padding(
-              padding: const EdgeInsetsDirectional.only(end: 14),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 3,
-                  height: double.maxFinite,
-                  decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.08),
-                      image: DecorationImage(
-                          image: imageProvider, fit: BoxFit.cover)),
-                ),
-              ),
-            ),
-        progressIndicatorBuilder: (context, url, downloadProgress) => Padding(
-              padding: const EdgeInsetsDirectional.only(end: 14),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 3,
-                  height: double.maxFinite,
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.08),
+    return article!.urlToImage != null && article!.urlToImage!.isNotEmpty
+        ? CachedNetworkImage(
+            imageUrl: article!.urlToImage!,
+            imageBuilder: (context, imageProvider) => Padding(
+                  padding: const EdgeInsetsDirectional.only(end: 14),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20.0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 3,
+                      height: double.maxFinite,
+                      decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.08),
+                          image: DecorationImage(
+                              image: imageProvider, fit: BoxFit.cover)),
+                    ),
                   ),
-                  child: const CupertinoActivityIndicator(),
                 ),
-              ),
-            ),
-        errorWidget: (context, url, error) => Padding(
-              padding: const EdgeInsetsDirectional.only(end: 14),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width / 3,
-                  height: double.maxFinite,
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.08),
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(end: 14),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20.0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 3,
+                      height: double.maxFinite,
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.08),
+                      ),
+                      child: const CupertinoActivityIndicator(),
+                    ),
                   ),
-                  child: const Icon(Icons.error),
                 ),
-              ),
-            ));
+            errorWidget: (context, url, error) => Padding(
+                  padding: const EdgeInsetsDirectional.only(end: 14),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20.0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 3,
+                      height: double.maxFinite,
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.08),
+                      ),
+                      child: const Icon(Icons.error),
+                    ),
+                  ),
+                ))
+        : Container();
   }
 
   Widget _buildTitleAndDescription() {
@@ -123,7 +126,7 @@ class ArticleWidget extends StatelessWidget {
                 const Icon(Icons.timeline_outlined, size: 16),
                 const SizedBox(width: 4),
                 Text(
-                  article!.publishedAt!,
+                  article!.publishedAt ?? DateTime.now().toIso8601String(),
                   style: const TextStyle(
                     fontSize: 12,
                   ),

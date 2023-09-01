@@ -87,7 +87,7 @@ class _$AppDb extends AppDb {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `articles` (`author` TEXT, `title` TEXT, `description` TEXT, `url` TEXT, `urlToImage` TEXT, `publishedAt` TEXT, `content` TEXT, PRIMARY KEY (`author`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `sources` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `sources` (`id` TEXT, `name` TEXT, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -111,11 +111,10 @@ class _$ArticleDao extends ArticleDao {
     this.database,
     this.changeListener,
   )   : _queryAdapter = QueryAdapter(database),
-        _articleModelInsertionAdapter = InsertionAdapter(
+        _articleInsertionAdapter = InsertionAdapter(
             database,
             'articles',
-            (ArticleModel item) => <String, Object?>{
-                  'source': item.source,
+            (Article item) => <String, Object?>{
                   'author': item.author,
                   'title': item.title,
                   'description': item.description,
@@ -124,12 +123,11 @@ class _$ArticleDao extends ArticleDao {
                   'publishedAt': item.publishedAt,
                   'content': item.content
                 }),
-        _articleModelUpdateAdapter = UpdateAdapter(
+        _articleUpdateAdapter = UpdateAdapter(
             database,
             'articles',
             ['author'],
-            (ArticleModel item) => <String, Object?>{
-                  'source': item.source,
+            (Article item) => <String, Object?>{
                   'author': item.author,
                   'title': item.title,
                   'description': item.description,
@@ -138,12 +136,11 @@ class _$ArticleDao extends ArticleDao {
                   'publishedAt': item.publishedAt,
                   'content': item.content
                 }),
-        _articleModelDeletionAdapter = DeletionAdapter(
+        _articleDeletionAdapter = DeletionAdapter(
             database,
             'articles',
             ['author'],
-            (ArticleModel item) => <String, Object?>{
-                  'source': item.source,
+            (Article item) => <String, Object?>{
                   'author': item.author,
                   'title': item.title,
                   'description': item.description,
@@ -159,17 +156,16 @@ class _$ArticleDao extends ArticleDao {
 
   final QueryAdapter _queryAdapter;
 
-  final InsertionAdapter<ArticleModel> _articleModelInsertionAdapter;
+  final InsertionAdapter<Article> _articleInsertionAdapter;
 
-  final UpdateAdapter<ArticleModel> _articleModelUpdateAdapter;
+  final UpdateAdapter<Article> _articleUpdateAdapter;
 
-  final DeletionAdapter<ArticleModel> _articleModelDeletionAdapter;
+  final DeletionAdapter<Article> _articleDeletionAdapter;
 
   @override
-  Future<List<ArticleModel>> getAllArticles() async {
+  Future<List<Article>> getAllArticles() async {
     return _queryAdapter.queryList('SELECT * from articles',
-        mapper: (Map<String, Object?> row) => ArticleModel(
-            source: row['source'] as SourceModel?,
+        mapper: (Map<String, Object?> row) => Article(
             author: row['author'] as String?,
             title: row['title'] as String?,
             description: row['description'] as String?,
@@ -180,20 +176,20 @@ class _$ArticleDao extends ArticleDao {
   }
 
   @override
-  Future<void> insertArticle(ArticleModel articleModel) async {
-    await _articleModelInsertionAdapter.insert(
+  Future<void> insertArticle(Article articleModel) async {
+    await _articleInsertionAdapter.insert(
         articleModel, OnConflictStrategy.abort);
   }
 
   @override
-  Future<void> updateArticle(ArticleModel articleModel) async {
-    await _articleModelUpdateAdapter.update(
+  Future<void> updateArticle(Article articleModel) async {
+    await _articleUpdateAdapter.update(
         articleModel, OnConflictStrategy.replace);
   }
 
   @override
-  Future<void> deleteArticle(ArticleModel articleModel) async {
-    await _articleModelDeletionAdapter.delete(articleModel);
+  Future<void> deleteArticle(Article articleModel) async {
+    await _articleDeletionAdapter.delete(articleModel);
   }
 }
 
@@ -202,12 +198,12 @@ class _$SourceDao extends SourceDao {
     this.database,
     this.changeListener,
   )   : _queryAdapter = QueryAdapter(database),
-        _sourceModelInsertionAdapter = InsertionAdapter(
+        _sourceInsertionAdapter = InsertionAdapter(
             database,
             'sources',
             (Source item) =>
                 <String, Object?>{'id': item.id, 'name': item.name}),
-        _sourceModelDeletionAdapter = DeletionAdapter(
+        _sourceDeletionAdapter = DeletionAdapter(
             database,
             'sources',
             ['id'],
@@ -220,24 +216,24 @@ class _$SourceDao extends SourceDao {
 
   final QueryAdapter _queryAdapter;
 
-  final InsertionAdapter<Source> _sourceModelInsertionAdapter;
+  final InsertionAdapter<Source> _sourceInsertionAdapter;
 
-  final DeletionAdapter<Source> _sourceModelDeletionAdapter;
+  final DeletionAdapter<Source> _sourceDeletionAdapter;
 
   @override
   Future<List<Source>> getAllSources() async {
     return _queryAdapter.queryList('SELECT * from sources',
         mapper: (Map<String, Object?> row) =>
-            SourceModel(id: row['id'] as String, name: row['name'] as String));
+            Source(id: row['id'] as String?, name: row['name'] as String?));
   }
 
   @override
   Future<void> insertSource(Source source) async {
-    await _sourceModelInsertionAdapter.insert(source, OnConflictStrategy.abort);
+    await _sourceInsertionAdapter.insert(source, OnConflictStrategy.abort);
   }
 
   @override
   Future<void> deleteSource(Source source) async {
-    await _sourceModelDeletionAdapter.delete(source);
+    await _sourceDeletionAdapter.delete(source);
   }
 }

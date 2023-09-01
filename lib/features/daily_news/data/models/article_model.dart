@@ -1,4 +1,3 @@
-import 'package:floor/floor.dart';
 import 'package:news_app/features/daily_news/domain/entities/article_entity.dart';
 
 class ArticleListModel extends ArticleEntity {
@@ -11,10 +10,10 @@ class ArticleListModel extends ArticleEntity {
       );
 }
 
-@Entity(tableName: 'articles', primaryKeys: ['author'])
 class ArticleModel extends Article {
   ArticleModel(
-      {super.source,
+      {
+        // super.source,
       super.author,
       super.title,
       super.description,
@@ -24,7 +23,7 @@ class ArticleModel extends Article {
       super.content});
 
   static ArticleModel fromJson(Map<String, dynamic> json) => ArticleModel(
-        source: SourceModel.fromJson(json["source"]),
+        // source: SourceModel.fromJson(json["source"]),
         author: json["author"],
         title: json["title"],
         description: json["description"],
@@ -35,7 +34,6 @@ class ArticleModel extends Article {
       );
 }
 
-@Entity(tableName: 'sources', primaryKeys: ['id'])
 class SourceModel extends Source {
   SourceModel({super.id, super.name});
 

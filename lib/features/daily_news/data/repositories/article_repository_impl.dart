@@ -8,6 +8,8 @@ import 'package:news_app/features/daily_news/data/data_sources/remote/news_api_s
 import 'package:news_app/features/daily_news/data/models/article_model.dart';
 import 'package:news_app/features/daily_news/domain/repositories/article_repository.dart';
 
+import '../../domain/entities/article_entity.dart';
+
 class ArticleRepositoryImpl implements ArticleRepository {
   final NewsApiService _newsApiService;
   final AppDb _appDb;
@@ -40,20 +42,20 @@ class ArticleRepositoryImpl implements ArticleRepository {
   }
 
   @override
-  Future<List<ArticleModel>> getLocalArticles() {
+  Future<List<Article>> getLocalArticles() {
     return _appDb.articleDao.getAllArticles();
   }
 
   @override
-  Future<void> removeArticle(ArticleModel articleModel) {
+  Future<void> removeArticle(Article articleModel) {
     return _appDb.articleDao.deleteArticle(articleModel);
   }
 
   @override
-  Future<void> saveArticle(ArticleModel articleModel) {
-    if (articleModel.source != null) {
-      _appDb.sourceDao.insertSource(articleModel.source!);
-    }
+  Future<void> saveArticle(Article articleModel) {
+    // if (articleModel.source != null) {
+    //   _appDb.sourceDao.insertSource(articleModel.source!);
+    // }
     return _appDb.articleDao.insertArticle(articleModel);
   }
 }

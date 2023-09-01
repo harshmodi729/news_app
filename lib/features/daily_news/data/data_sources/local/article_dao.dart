@@ -1,17 +1,18 @@
 import 'package:floor/floor.dart';
-import 'package:news_app/features/daily_news/data/models/article_model.dart';
+
+import '../../../domain/entities/article_entity.dart';
 
 @dao
 abstract class ArticleDao {
   @insert
-  Future<void> insertArticle(ArticleModel articleModel);
+  Future<void> insertArticle(Article articleModel);
 
   @delete
-  Future<void> deleteArticle(ArticleModel articleModel);
+  Future<void> deleteArticle(Article articleModel);
 
   @Query('SELECT * from articles')
-  Future<List<ArticleModel>> getAllArticles();
+  Future<List<Article>> getAllArticles();
 
   @Update(onConflict: OnConflictStrategy.replace)
-  Future<void> updateArticle(ArticleModel articleModel);
+  Future<void> updateArticle(Article articleModel);
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news_app/config/routes/app_routes.dart';
 import 'package:news_app/features/daily_news/presentation/blocs/aricle/article_bloc.dart';
 import 'package:news_app/features/daily_news/presentation/pages/home/daily_news.dart';
 import 'package:news_app/service_injection.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
+        onGenerateRoute: AppRoutes.onGenerateRoutes,
         home: const DailyNews(),
       ),
     );
